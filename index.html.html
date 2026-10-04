@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buat Sayangku yang Lagi Ngambek 💕</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Fredoka & Patrick Hand -->
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Patrick+Hand&display=swap" rel="stylesheet">
+    <!-- FontAwesome for Cute Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Canvas Confetti JS -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        pastelPink: '#FFB7B2',
+                        pastelPinkLight: '#FFE4E1',
+                        pastelBlue: '#A2C4C9',
+                        pastelBlueLight: '#E0F4F7',
+                        softPink: '#FF80AB',
+                        softBlue: '#81D4FA',
+                    },
+                    fontFamily: {
+                        fredoka: ['Fredoka', 'sans-serif'],
+                        hand: ['Patrick Hand', 'cursive'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            font-family: 'Fredoka', sans-serif;
+            background: linear-gradient(135deg, #FFE4E1 0%, #E0F4F7 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+            user-select: none;
+        }
+
+        /* Floating background shapes */
+        .floating-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .floating-item {
+            position: absolute;
+            animation: floatUp 10s infinite linear;
+            opacity: 0.6;
+        }
+
+        @keyframes floatUp {
+            0% {
+                transform: translateY(105vh) rotate(0deg);
+                opacity: 0.7;
+            }
+            100% {
+                transform: translateY(-10vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Heart Pulse Animation */
+        .pulse-heart {
+            animation: pulse 1.5s infinite ease-in-out;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        /* Bouncing Mascot */
+        .bounce-cute {
+            animation: bounceCute 2s infinite ease-in-out;
+        }
+
+        @keyframes bounceCute {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        /* Custom Scrollbar for Smooth Feel */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #FFE4E1;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #FF80AB;
+            border-radius: 10px;
+        }
+
+        /* Runaway button smooth translation */
+        #btnNo {
+            transition: all 0.2s ease-out;
+            position: relative;
+        }
+
+        /* Card flip effect */
+        .perspective-1000 {
+            perspective: 1000px;
+        }
+    </style>
+</head>
+<body class="relative flex flex-col items-center justify-between min-h-screen p-4 md:p-8">
+
+    <div class="floating-bg" id="floatingBg"></div>
+
+    <!-- MAIN CONTAINER -->
+    <main class="relative z-10 w-full max-w-lg flex flex-col items-center gap-6 my-auto">
+
+        <!-- HEADER BANNER -->
+        <div class="bg-white/80 backdrop-blur-md rounded-3xl p-6 shadow-xl w-full text-center border-4 border-pink-200">
+            <div class="inline-block bg-pink-100 text-pink-500 font-bold px-4 py-1 rounded-full text-sm mb-2 shadow-inner">
+                ✨ Misi Perdamaian Spesial ✨
+            </div>
+            <h1 class="text-2xl md:text-3xl font-extrabold text-pink-500 flex items-center justify-center gap-2">
+                <span>Halo Sayangku!</span>
+                <i class="fa-solid fa-heart text-red-400 pulse-heart"></i>
+            </h1>
+            <p class="text-slate-600 text-sm mt-1">Buka pesan ini satu per satu yaaa~ Jangan ngambek terus 🥺</p>
+        </div>
+
+        <!-- MASCOT SECTION -->
+        <div class="bg-white/90 backdrop-blur-md rounded-3xl p-6 shadow-xl w-full text-center border-4 border-blue-200 flex flex-col items-center relative overflow-hidden">
+            <!-- Cute SVG Bear Mascot -->
+            <div id="mascotContainer" class="bounce-cute cursor-pointer transition-transform duration-300 hover:scale-105" onclick="interactMascot()">
+                <svg width="140" height="140" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Ears -->
+                    <circle cx="50" cy="50" r="30" fill="#FFC0CB" stroke="#FF80AB" stroke-width="6"/>
+                    <circle cx="50" cy="50" r="15" fill="#FFD1DC"/>
+                    <circle cx="150" cy="50" r="30" fill="#FFC0CB" stroke="#FF80AB" stroke-width="6"/>
+                    <circle cx="150" cy="50" r="15" fill="#FFD1DC"/>
+                    <!-- Head -->
+                    <circle cx="100" cy="110" r="75" fill="#FFF0F5" stroke="#FF80AB" stroke-width="6"/>
+                    <!-- Eyes (Teardrop / Pleading look) -->
+                    <circle cx="70" cy="100" r="10" fill="#4A4A4A"/>
+                    <circle cx="130" cy="100" r="10" fill="#4A4A4A"/>
+                    <circle cx="73" cy="97" r="4" fill="white"/>
+                    <circle cx="133" cy="97" r="4" fill="white"/>
+                    <!-- Sparkle / Tear -->
+                    <path d="M 60 115 Q 55 125 60 130 Q 65 125 60 115" fill="#81D4FA"/>
+                    <path d="M 140 115 Q 145 125 140 130 Q 135 125 140 115" fill="#81D4FA"/>
+                    <!-- Snout -->
+                    <ellipse cx="100" cy="120" rx="20" ry="15" fill="#FFE4E1"/>
+                    <!-- Nose -->
+                    <polygon points="100,113 93,122 107,122" fill="#FF80AB"/>
+                    <!-- Sad Mouth -->
+                    <path d="M 90 132 Q 100 125 110 132" stroke="#4A4A4A" stroke-width="4" stroke-linecap="round" fill="none"/>
+                    <!-- Blushing Cheeks -->
+                    <ellipse cx="55" cy="115" rx="12" ry="8" fill="#FF80AB" opacity="0.6"/>
+                    <ellipse cx="145" cy="115" rx="12" ry="8" fill="#FF80AB" opacity="0.6"/>
+                </svg>
+            </div>
+            
+            <p id="mascotSpeech" class="mt-3 text-sm font-semibold text-slate-700 bg-pink-50 px-4 py-2 rounded-2xl border border-pink-200">
+                👉 "Pencet aku dong sayang... jangan diputer balik HP-nya ya!" 👈
+            </p>
+        </div>
+
+        <!-- STORY CARD SLIDER (Ucapan Beruntun) -->
+        <div class="bg-white/90 backdrop-blur-md rounded-3xl p-6 shadow-xl w-full border-4 border-pink-200 flex flex-col items-center">
+            <div class="flex justify-between items-center w-full mb-4">
+                <span id="cardProgress" class="text-xs font-bold text-blue-500 bg-blue-100 px-3 py-1 rounded-full">Pesan 1 dari 10</span>
+                <span class="text-xs text-pink-400 font-bold"><i class="fa-solid fa-hand-pointer animate-bounce mr-1"></i> Klik kartu untuk lanjut</span>
+            </div>
+
+            <!-- Card Content Box -->
+            <div id="storyCard" onclick="nextCard()" class="w-full bg-gradient-to-br from-pink-100 to-blue-100 border-2 border-dashed border-pink-300 rounded-2xl p-6 min-h-[160px] flex flex-col items-center justify-center text-center cursor-pointer transform transition-all duration-300 hover:scale-[1.02] shadow-sm relative overflow-hidden group">
+                <div class="absolute -right-4 -top-4 opacity-20 group-hover:opacity-40 transition-opacity">
+                    <i class="fa-solid fa-heart text-6xl text-pink-400"></i>
+                </div>
+                <div id="cardIcon" class="text-3xl mb-2 text-pink-500">
+                    <i class="fa-solid fa-comment-dots"></i>
+                </div>
+                <p id="cardText" class="text-lg md:text-xl font-bold text-slate-800 leading-relaxed font-hand">
+                    "sayangggg"
+                </p>
+            </div>
+
+            <!-- Card Navigation Indicator dots -->
+            <div class="flex gap-1.5 mt-4" id="dotsContainer"></div>
+        </div>
+
+        <!-- ACTION BUTTONS: FORGIVE OR NOT -->
+        <div class="bg-white/90 backdrop-blur-md rounded-3xl p-6 shadow-xl w-full text-center border-4 border-blue-200 flex flex-col gap-4">
+            <h2 class="text-lg font-bold text-slate-700">Gimana sayang, udah mau maafin aku belum? 🥺</h2>
+            
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-3 w-full relative min-h-[100px]" id="buttonArea">
+                <!-- MAAFIN BUTTON -->
+                <button onclick="forgiveMe()" class="w-full sm:w-1/2 bg-gradient-to-r from-pink-400 to-pink-500 hover:from-pink-500 hover:to-pink-600 text-white font-bold py-3.5 px-6 rounded-2xl shadow-lg transform active:scale-95 transition-all text-base flex items-center justify-center gap-2 border-b-4 border-pink-700">
+                    <i class="fa-solid fa-heart"></i>
+                    <span>Maafin Dehh 🥰</span>
+                </button>
+
+                <!-- ENGGAK / RUNAWAY BUTTON -->
+                <button id="btnNo" onmouseover="runAway()" onclick="runAway()" class="w-full sm:w-1/2 bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold py-3.5 px-6 rounded-2xl shadow-md transition-all text-base flex items-center justify-center gap-2 border-b-4 border-slate-400">
+                    <i class="fa-solid fa-xmark"></i>
+                    <span id="noBtnText">Enggak! Masih Ngambek! 😜</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- EXTRA ENTERTAINMENT: VOUCHERS & VIRTUAL HUG -->
+        <div class="bg-white/90 backdrop-blur-md rounded-3xl p-6 shadow-xl w-full border-4 border-pink-200 flex flex-col gap-4">
+            <h3 class="text-center font-bold text-pink-600 text-lg flex items-center justify-center gap-2">
+                <i class="fa-solid fa-gift"></i> Bonus Hiburan Buat Pacarku
+            </h3>
+
+            <!-- Hug Button -->
+            <button onclick="sendVirtualHug()" class="w-full bg-gradient-to-r from-blue-300 to-pastelBlue text-slate-800 font-bold py-3 px-4 rounded-2xl shadow hover:opacity-90 active:scale-95 transition flex items-center justify-center gap-2 border-b-4 border-blue-400">
+                <span class="text-xl">🫂</span>
+                <span>Kirim Peluk Virtual Bertubi-tubi</span>
+            </button>
+
+            <!-- Vouchers Section -->
+            <div class="space-y-2.5 mt-2">
+                <p class="text-xs font-semibold text-slate-500 text-center">Klik voucher di bawah untuk klaim!</p>
+                
+                <!-- Voucher Item 1 -->
+                <div onclick="claimVoucher(this, 'Voucher Es Krim / Minuman Favorit')" class="p-3 bg-pink-50 hover:bg-pink-100 border-2 border-pink-200 border-dashed rounded-2xl cursor-pointer flex items-center justify-between transition group">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-pink-200 flex items-center justify-center text-pink-600 text-xl font-bold group-hover:scale-110 transition">
+                            🍦
+                        </div>
+                        <div class="text-left">
+                            <h4 class="font-bold text-sm text-slate-800">Voucher Es Krim / Jajan</h4>
+                            <p class="text-xs text-slate-500">Bebas pilih es krim apa aja, aku yang bayar!</p>
+                        </div>
+                    </div>
+                    <span class="text-xs bg-pink-400 text-white font-bold px-2.5 py-1 rounded-xl claim-status">Klaim</span>
+                </div>
+
+                <!-- Voucher Item 2 -->
+                <div onclick="claimVoucher(this, 'Voucher Manja-manja 10 Jam')" class="p-3 bg-blue-50 hover:bg-blue-100 border-2 border-blue-200 border-dashed rounded-2xl cursor-pointer flex items-center justify-between transition group">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-blue-200 flex items-center justify-center text-blue-600 text-xl font-bold group-hover:scale-110 transition">
+                            🧸
+                        </div>
+                        <div class="text-left">
+                            <h4 class="font-bold text-sm text-slate-800">Voucher Manja 10 Jam</h4>
+                            <p class="text-xs text-slate-500">Boleh usul apa aja, nggak bakal dimarahin!</p>
+                        </div>
+                    </div>
+                    <span class="text-xs bg-blue-400 text-white font-bold px-2.5 py-1 rounded-xl claim-status">Klaim</span>
+                </div>
+
+                <!-- Voucher Item 3 -->
+                <div onclick="claimVoucher(this, 'Voucher Bebas Ngomel Unlimited')" class="p-3 bg-purple-50 hover:bg-purple-100 border-2 border-purple-200 border-dashed rounded-2xl cursor-pointer flex items-center justify-between transition group">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-purple-200 flex items-center justify-center text-purple-600 text-xl font-bold group-hover:scale-110 transition">
+                            👑
+                        </div>
+                        <div class="text-left">
+                            <h4 class="font-bold text-sm text-slate-800">Voucher Bebas Ngomel</h4>
+                            <p class="text-xs text-slate-500">Aku cuma mendengarkan sambil bilang 'iya sayang'</p>
+                        </div>
+                    </div>
+                    <span class="text-xs bg-purple-400 text-white font-bold px-2.5 py-1 rounded-xl claim-status">Klaim</span>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="relative z-10 text-center my-6 text-xs text-slate-500 font-semibold">
+        Dibuat khusus penuh cinta dengan kepasrahan setinggi langit ❤️
+    </footer>
+
+    <!-- POPUP MODAL (CUSTOM ALERT) -->
+    <div id="modalOverlay" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden transition-opacity duration-300">
+        <div class="bg-white rounded-3xl p-6 md:p-8 max-w-sm w-full text-center border-4 border-pink-300 shadow-2xl transform scale-90 transition-transform duration-300" id="modalBox">
+            <div id="modalIcon" class="text-6xl mb-3">💖</div>
+            <h3 id="modalTitle" class="text-2xl font-extrabold text-pink-500 mb-2">Yaaaaay! MANTAP!</h3>
+            <p id="modalMessage" class="text-slate-600 text-sm mb-6 leading-relaxed">
+                Makasih udah mau maafin aku sayang! Sini peluk duluuu 🤗
+            </p>
+            <button onclick="closeModal()" class="w-full bg-pink-400 hover:bg-pink-500 text-white font-bold py-3 rounded-2xl shadow-lg transition">
+                Tutup & Sini Manja Lagi 😘
+            </button>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // Text story array requested by user
+        const messages = [
+            { text: "sayangggg...", icon: "fa-regular fa-face-sad-cry" },
+            { text: "jangann ngambekk teruss yaaaa 🥺", icon: "fa-solid fa-hand-holding-heart" },
+            { text: "akuu tadii salaah paham ajaa ituuu heheee 😅", icon: "fa-solid fa-face-smile-beam" },
+            { text: "maapin yaaa sayangggg 🙏", icon: "fa-solid fa-heart-circle-bolt" },
+            { text: "nahhh ini hadiah buat kamuu, aku bikin semacam iniii sekaliann nyoba nyobaa masii pemulaaa maklum lahhhh 💻✨", icon: "fa-solid fa-wand-magic-sparkles" },
+            { text: "udaaa yaaa sayangg ngambekk nyaaaa ✨", icon: "fa-solid fa-sun" },
+            { text: "cinii ciniii ama akuuu, akuu manjain siniii kayakkk tadiiii 🤗💕", icon: "fa-solid fa-face-kiss-wink-heart" },
+            { text: "sayanggg tadii lucuu bangettt pas manjaa ke akuuu merengut merengut ke akuuuu heheee 🥰", icon: "fa-solid fa-cat" },
+            { text: "akuu sukaaaaa ❤️", icon: "fa-solid fa-fire-flame-curved" },
+            { text: "lovee youuu sayanggkuuuu 💕💕💕", icon: "fa-solid fa-heart-circle-check" }
+        ];
+
+        let currentIndex = 0;
+        let runawayCount = 0;
+
+        // Mascot playful speech list
+        const mascotDialogues = [
+            "Aww! Jangan dipencet kenceng-kenceng dong! 🙈",
+            "Sakit tapi enak... eh maafin dower ini ya? 🥺",
+            "Manja-manja lagi yuk kayak tadi! 🥰",
+            "Merengut kamu tuh makin bikin gemes tau! 😚",
+            "Makin kamu pencet, makin sayang aku sama kamu! ❤️"
+        ];
+
+        // Generate Floating Hearts & Stars Background
+        function generateFloatingBg() {
+            const container = document.getElementById('floatingBg');
+            const icons = ['❤️', '💖', '⭐', '☁️', '🌸', '✨', '💙'];
+            
+            for (let i = 0; i < 20; i++) {
+                const item = document.createElement('div');
+                item.className = 'floating-item';
+                item.innerText = icons[Math.floor(Math.random() * icons.length)];
+                item.style.left = `${Math.random() * 100}%`;
+                item.style.fontSize = `${Math.random() * 20 + 15}px`;
+                item.style.animationDuration = `${Math.random() * 6 + 6}s`;
+                item.style.animationDelay = `${Math.random() * 5}s`;
+                container.appendChild(item);
+            }
+        }
+
+        // Initialize Card Indicator Dots
+        function initDots() {
+            const dotsContainer = document.getElementById('dotsContainer');
+            dotsContainer.innerHTML = '';
+            messages.forEach((_, idx) => {
+                const dot = document.createElement('div');
+                dot.id = `dot-${idx}`;
+                dot.className = `h-2 rounded-full transition-all duration-300 ${idx === 0 ? 'w-6 bg-pink-500' : 'w-2 bg-slate-300'}`;
+                dotsContainer.appendChild(dot);
+            });
+        }
+
+        // Update Card Content
+        function updateCard() {
+            const cardText = document.getElementById('cardText');
+            const cardIcon = document.getElementById('cardIcon');
+            const cardProgress = document.getElementById('cardProgress');
+
+            // Animation Reset
+            const card = document.getElementById('storyCard');
+            card.classList.add('scale-95', 'opacity-50');
+
+            setTimeout(() => {
+                cardText.innerText = `"${messages[currentIndex].text}"`;
+                cardIcon.innerHTML = `<i class="${messages[currentIndex].icon}"></i>`;
+                cardProgress.innerText = `Pesan ${currentIndex + 1} dari ${messages.length}`;
+
+                // Update dots
+                messages.forEach((_, idx) => {
+                    const dot = document.getElementById(`dot-${idx}`);
+                    if (dot) {
+                        dot.className = `h-2 rounded-full transition-all duration-300 ${idx === currentIndex ? 'w-6 bg-pink-500' : 'w-2 bg-slate-300'}`;
+                    }
+                });
+
+                card.classList.remove('scale-95', 'opacity-50');
+            }, 150);
+        }
+
+        function nextCard() {
+            currentIndex = (currentIndex + 1) % messages.length;
+            updateCard();
+            
+            // Pop confetti when reaching last card
+            if (currentIndex === messages.length - 1) {
+                confetti({
+                    particleCount: 50,
+                    spread: 60,
+                    origin: { y: 0.7 }
+                });
+            }
+        }
+
+        // Mascot Interactive Handler
+        function interactMascot() {
+            const speech = document.getElementById('mascotSpeech');
+            const randomMsg = mascotDialogues[Math.floor(Math.random() * mascotDialogues.length)];
+            speech.innerText = randomMsg;
+
+            // Trigger burst of mini hearts
+            confetti({
+                particleCount: 15,
+                spread: 40,
+                startVelocity: 15,
+                scalar: 0.8,
+                origin: { y: 0.4 }
+            });
+        }
+
+        // Runaway Button Logic ("Enggak / Masih Ngambek")
+        function runAway() {
+            const btn = document.getElementById('btnNo');
+            const btnText = document.getElementById('noBtnText');
+            runawayCount++;
+
+            const x = (Math.random() - 0.5) * 200;
+            const y = (Math.random() - 0.5) * 120;
+
+            btn.style.transform = `translate(${x}px, ${y}px)`;
+
+            const teasingTexts = [
+                "Eiii gak bisa dipencet! 😜",
+                "Yahhh melesettt! 🤪",
+                "Maafin aja napas sih 🥺",
+                "Tombol ini macet tuh! 😂",
+                "Hayo mending pencet tombol pink! 💖",
+                "Masih berusaha aja nih... 🥰"
+            ];
+
+            btnText.innerText = teasingTexts[Math.min(runawayCount, teasingTexts.length - 1)];
+        }
+
+        // Forgive Action Button
+        function forgiveMe() {
+            // Trigger big confetti fireworks
+            const count = 200;
+            const defaults = {
+                origin: { y: 0.7 }
+            };
+
+            function fire(particleRatio, opts) {
+                confetti(Object.assign({}, defaults, opts, {
+                    particleCount: Math.floor(count * particleRatio)
+                }));
+            }
+
+            fire(0.25, { spread: 26, startVelocity: 55, colors: ['#FF80AB', '#81D4FA'] });
+            fire(0.2, { spread: 60, colors: ['#FFC0CB', '#E0F4F7'] });
+            fire(0.35, { spread: 100, decay: 0.91, scalar: 0.8 });
+            fire(0.1, { spread: 120, startVelocity: 25, decay: 0.92, colors: ['#FFD1DC', '#A2C4C9'] });
+            fire(0.1, { spread: 120, startVelocity: 45 });
+
+            // Show Popup Modal
+            showModal(
+                "💖 HORAAAY! MAKASIH SAYANG! 💖",
+                "Makasih udah mau maafin aku yaaa sayangku! Sini cini cini pelukkk erat-erat! Nanti aku manjain full 24 jam non-stop! 🥰✨",
+                "🥳"
+            );
+        }
+
+        // Virtual Hug Action
+        function sendVirtualHug() {
+            for (let i = 0; i < 3; i++) {
+                setTimeout(() => {
+                    confetti({
+                        particleCount: 30,
+                        angle: 60 + (i * 30),
+                        spread: 55,
+                        origin: { x: i * 0.3 + 0.2, y: 0.8 },
+                        colors: ['#FF80AB', '#FFB7B2', '#81D4FA']
+                    });
+                }, i * 200);
+            }
+
+            showModal(
+                "🫂 PELUKAN VIRTUAL DITERIMA!",
+                "Sretssss! (suara meluk erat banget). Jangan ngambek-ngambek lagi ya maniskuuu! 😘",
+                "🤗"
+            );
+        }
+
+        // Voucher Claiming Logic
+        function claimVoucher(element, voucherTitle) {
+            const statusTag = element.querySelector('.claim-status');
+            if (statusTag.innerText === 'Klaim') {
+                statusTag.innerText = 'Terklaim ✔';
+                statusTag.className = 'text-xs bg-emerald-500 text-white font-bold px-2.5 py-1 rounded-xl claim-status';
+                element.classList.add('opacity-75');
+
+                confetti({
+                    particleCount: 25,
+                    spread: 50,
+                    origin: { y: 0.6 }
+                });
+
+                showModal(
+                    "🎉 Voucher Berhasil Diklaim!",
+                    `Selamat! Kamu berhasil klaim **${voucherTitle}**. Tunjukkan bukti screenshot ini ke aku buat langsung dicairkan ya! 😉`,
+                    "🎟️"
+                );
+            } else {
+                showModal(
+                    "⚠️️ Sudah Diklaim!",
+                    `Voucher **${voucherTitle}** ini udah diklaim sayang! Tinggal kamu pakaaaii sekarang ke akuuu!`,
+                    "✨"
+                );
+            }
+        }
+
+        // Modal Helpers
+        function showModal(title, message, icon) {
+            document.getElementById('modalTitle').innerText = title;
+            document.getElementById('modalMessage').innerText = message;
+            document.getElementById('modalIcon').innerText = icon || "💖";
+            
+            const overlay = document.getElementById('modalOverlay');
+            const box = document.getElementById('modalBox');
+
+            overlay.classList.remove('hidden');
+            setTimeout(() => {
+                box.classList.remove('scale-90');
+                box.classList.add('scale-100');
+            }, 10);
+        }
+
+        function closeModal() {
+            const overlay = document.getElementById('modalOverlay');
+            const box = document.getElementById('modalBox');
+
+            box.classList.remove('scale-100');
+            box.classList.add('scale-90');
+
+            setTimeout(() => {
+                overlay.classList.add('hidden');
+            }, 200);
+        }
+
+        window.onload = function() {
+            generateFloatingBg();
+            initDots();
+            updateCard();
+        };
+    </script>
+</body>
+</html>
